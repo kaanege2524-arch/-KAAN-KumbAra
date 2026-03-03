@@ -14,8 +14,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
 :root{
   --bg:#F0EBF8;--bg2:#E8E0F5;--card:#FFF;--border:#E2D9F3;
@@ -506,48 +504,6 @@ function tgtDate(price) {
   return d.toLocaleDateString('tr-TR',{day:'2-digit',month:'long',year:'numeric'});
 }
 
-
-const FB_CONFIG = {
-  apiKey: 'AIzaSyDNZcMFiwFLYeNFBPDstt6weBwAJesO_lQ',
-  authDomain: 'kumbara-343ca.firebaseapp.com',
-  databaseURL: 'https://kumbara-343ca-default-rtdb.europe-west1.firebasedatabase.app',
-  projectId: 'kumbara-343ca',
-  storageBucket: 'kumbara-343ca.firebasestorage.app',
-  messagingSenderId: '912649995360',
-  appId: '1:912649995360:web:baa00365550e60bb11af05'
-};
-let fbDB = null;
-function initFirebase() {
-  try {
-    fbDB = firebase.database();
-    console.log('Firebase baglandi');
-    return true;
-  } catch(e) { console.error('Firebase hatasi:', e); return false; }
-}
-async function save() {
-  const d = JSON.stringify(S);
-  try { localStorage.setItem('kumbara-v3', d); } catch(_) {}
-  if (fbDB) { try { await fbDB.ref('kumbara/data').set({ json: d, ts: Date.now() }); } catch(e) {} }
-}
-async function load() {
-  let d = null;
-  if (fbDB) { try { const snap = await fbDB.ref('kumbara/data').once('value'); if (snap.exists()) d = snap.val().json; } catch(e) {} }
-  if (d) { try { S = JSON.parse(d); } catch(_) {} }
-}
-function listenFirebase() {
-  fbDB.ref('kumbara/data').on('value', (snap) => {
-    try {
-      S = JSON.parse(snap.val().json);
-      S.ri.amount = Number(S.ri.amount) || 0;
-      S.bonuses = S.bonuses.map(b=>({...b, amount:Number(b.amount)||0}));
-      S.expenses = S.expenses.map(e=>({...e, amount:Number(e.amount)||0}));
-      S.goals = S.goals.map(g=>({...g, price:Number(g.price)||0}));
-      renderAll();
-      const el = document.getElementById('pbLastUpdate');
-      if(el) el.textContent = 'Son guncelleme: ' + new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
-    } catch(_) {}
-  });
-}
 /* ── PARENT MODE ── */
 const IS_PARENT = new URLSearchParams(location.search).has('parent');
 
@@ -1041,7 +997,6 @@ const fmtD = d => { if(!d)return''; try{return new Date(d).toLocaleDateString('t
 
 /* ── INIT ── */
 (async()=>{
-  initFirebase();
   await load();
   // Migrate: force all numeric fields to Number type
   S.ri.amount = Number(S.ri.amount) || 0;
@@ -1056,7 +1011,7 @@ const fmtD = d => { if(!d)return''; try{return new Date(d).toLocaleDateString('t
     document.getElementById('pbLastUpdate').textContent =
       `Son güncelleme: ${new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})}`;
     // Auto-refresh every 60s
-    listenFirebase();
+    setInterval(reloadParent, 60000);
   }
 
   renderAll();
