@@ -519,6 +519,7 @@ const FB_CONFIG = {
 let fbDB = null;
 function initFirebase() {
   try {
+    firebase.initializeApp(FB_CONFIG);
     fbDB = firebase.database();
     console.log('Firebase baglandi');
     return true;
