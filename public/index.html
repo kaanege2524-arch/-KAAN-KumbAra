@@ -528,6 +528,7 @@ function initFirebase() {
 async function save() {
   const d = JSON.stringify(S);
   try { localStorage.setItem('kumbara-v3', d); } catch(_) {}
+  console.log('save fbDB:', fbDB);
   if (fbDB) { try { await fbDB.ref('kumbara/data').set({ json: d, ts: Date.now() }); } catch(e) {} }
 }
 async function load() {
