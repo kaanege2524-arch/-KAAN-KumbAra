@@ -553,24 +553,7 @@ function listenFirebase() {
 /* ── PARENT MODE ── */
 const IS_PARENT = new URLSearchParams(location.search).has('parent');
 
-/* ── STORAGE ── */
-async function save() {
-  const d = JSON.stringify(S);
-  try { await window.storage.set('kumbara-v3', d); } catch(_) {}
-  try { await window.storage.set('kumbara-v3', d, true); } catch(_) {}
-  try { localStorage.setItem('kumbara-v3', d); } catch(_) {}
-}
-async function load() {
-  let d = null;
-  if (IS_PARENT) {
-    try { const r = await window.storage.get('kumbara-v3', true); if(r) d=r.value; } catch(_) {}
-  } else {
-    try { const r = await window.storage.get('kumbara-v3'); if(r) d=r.value; } catch(_) {}
-    if (!d) { try { d = localStorage.getItem('kumbara-v3'); } catch(_) {} }
-    if (!d) { try { d = localStorage.getItem('kumbara-v2'); } catch(_) {} }
-  }
-  if (d) { try { S = JSON.parse(d); } catch(_) {} }
-}
+
 
 /* ── RENDER ALL ── */
 function renderAll() {
