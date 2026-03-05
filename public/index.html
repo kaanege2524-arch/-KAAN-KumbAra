@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="theme-color" content="#F0EBF8"/>
-<title>KumbAra 🐷</title>
+<title>KartunPARA ⭐</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -32,7 +32,14 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 /* HEADER */
 .hdr{position:relative;z-index:1;padding:14px 18px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .hdr-l{display:flex;align-items:center;gap:10px}
-.pig{width:44px;height:44px;background:linear-gradient(135deg,var(--pkl),var(--pl));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--sh);animation:fl 3s ease-in-out infinite}
+.pig{width:44px;height:44px;background:linear-gradient(135deg,#E8172C,#F9B000);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(232,23,44,.35);animation:fl 3s ease-in-out infinite;position:relative;overflow:hidden}
+.pig-stars{position:relative;width:36px;height:36px}
+.pig-stars span{position:absolute;font-size:9px;line-height:1}
+.pig-stars .s1{top:0px;left:50%;transform:translateX(-50%)}
+.pig-stars .s2{top:10px;left:2px}
+.pig-stars .s3{top:10px;right:2px}
+.pig-stars .s4{bottom:2px;left:6px}
+.pig-stars .s5{bottom:2px;right:6px}
 @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .ttl{font-family:'Baloo 2',cursive;font-size:23px;font-weight:800;color:var(--pd)}
 .ttl span{color:var(--pink)}
@@ -40,7 +47,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 
 /* BALANCE CARD */
 .bal-card{position:relative;z-index:1;margin:0 16px 10px;background:linear-gradient(135deg,var(--pd),var(--purple) 60%,var(--pink));border-radius:24px;padding:18px 20px;overflow:hidden;box-shadow:0 6px 28px rgba(122,85,176,.28);flex-shrink:0;color:#fff}
-.bal-card::after{content:'🐷';position:absolute;font-size:88px;right:-8px;bottom:-16px;opacity:.1}
+.bal-card::after{content:'⭐';position:absolute;font-size:88px;right:-8px;bottom:-16px;opacity:.1}
 .bl{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;opacity:.8}
 .ba{font-family:'Baloo 2',cursive;font-size:42px;font-weight:800;line-height:1.05;margin:2px 0 12px}
 .ba sup{font-size:19px;opacity:.85;vertical-align:super}
@@ -241,8 +248,8 @@ body.parent-mode .nprompt { display:none !important; }
 <!-- Header -->
 <div class="hdr">
   <div class="hdr-l">
-    <div class="pig">🐷</div>
-    <div class="ttl">Kumb<span>Ara</span></div>
+    <div class="pig"><div class="pig-stars"><span class="s1">⭐</span><span class="s2">⭐</span><span class="s3">⭐</span><span class="s4">⭐</span><span class="s5">⭐</span></div></div>
+    <div class="ttl">Kartun<span>PARA</span></div>
   </div>
   <div id="bpill" style="display:none"><span class="bpill" id="btxt">🏆 0</span></div>
 </div>
@@ -805,7 +812,7 @@ async function askNotif() {
   const p = await Notification.requestPermission();
   if (p==='granted') {
     toast('Bildirimler aktif! Fiyat değişimlerinde haberdar olacaksın 🔔','✅');
-    try { new Notification('KumbAra 🐷',{body:'Bildirimler açıldı! Harika birikim yapıyorsun 🌟'}); } catch(_){}
+    try { new Notification('KartunPARA ⭐',{body:'Bildirimler açıldı! Harika birikim yapıyorsun 🌟'}); } catch(_){}
   } else {
     localStorage.setItem('kumbara-notif-dismissed','1');
     toast('İptal edildi. Ayarlardan sonra açabilirsin.','ℹ️');
@@ -831,7 +838,7 @@ function showPriceAlert(g, newP, oldP, isRise) {
   // Native push
   if ('Notification' in window && Notification.permission==='granted') {
     try {
-      new Notification(`KumbAra: ${g.emoji} ${g.name}`, {
+      new Notification(`KartunPARA: ${g.emoji} ${g.name}`, {
         body:`Fiyat %${pct} ${isRise?'arttı':'düştü'}! ₺${fmt(oldP)} → ₺${fmt(newP)}`,
         tag:'kumbara-'+g.name,
       });
